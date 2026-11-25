@@ -1,4 +1,3 @@
-
 # Backend Upskilling
 
 Proyecto de aprendizaje y práctica de desarrollo Backend.
