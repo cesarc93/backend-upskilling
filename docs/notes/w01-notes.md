@@ -169,3 +169,154 @@ Porque aislar las reglas o cálculos de la entrada/salida por consola permite pr
 4. ¿Qué hace mvn verify a diferencia de mvn validate, mvn test y mvn package? mvn validate revisa la configuración del proyecto; mvn test compila y corre las pruebas unitarias; mvn package empaqueta el artefacto (como JAR o WAR); y mvn verify ejecuta las fases anteriores junto con las verificaciones configuradas (el estándar que usa tu flujo de CI con mvn -B -ntp verify).   
 5. ¿Para qué sirve <scope>test</scope> al declarar junit-jupiter en el pom.xml?
 Indica que la dependencia solo es necesaria para compilar y ejecutar las pruebas y no debe incluirse en el artefacto final de producción.
+
+
+# Día 3
+
+## - Métodos y Sobrecarga (Overloading) en Java
+Estructura y firma:
+- Un método agrupa lógica reutilizable con modificadores, tipo de retorno, nombre, parámetros y cuerpo.
+- La firma solo incluye nombre + tipos y orden de parámetros (no incluye tipo de retorno, modificadores, nombres de parámetros ni throws).
+
+Parámetros y paso por valor:
+
+- Java siempre pasa argumentos por valor.
+
+- En primitivos se pasa una copia del valor; en referencias (objetos/arreglos) se pasa una copia de la referencia (puedes mutar el estado interno del arreglo, pero no reasignar la variable original fuera del método).
+
+Retorno (return):
+- Debe devolver un valor compatible con el tipo declarado en todas las rutas (o usar void, con return; opcional para salir antes), cuidando conversiones implícitas (widening) y casting explícito.
+
+Sobrecarga (Method Overloading):
+- Varios métodos con el mismo nombre en la misma clase pero distinta firma (cantidad, tipo u orden de parámetros); se resuelve en tiempo de compilación.
+- Cambiar solo el tipo de retorno no es válido, y abusar de widening/autoboxing/varargs o null puede causar ambigüedad.
+- Distinta de overriding (misma firma en subclase, resuelto en tiempo de ejecución).
+
+## - Alcance (Scope) en Java
+El alcance (scope) determina la parte del código donde una variable puede ser utilizada. El ciclo de vida (lifetime) indica cuánto tiempo existe una variable durante la ejecución del programa.
+Tipos de alcance
+1. Bloque: variable declarada dentro de { }. Solo puede utilizarse dentro de ese bloque (por ejemplo, un if o un for).
+
+2. Método: variable local declarada dentro de un método. Puede utilizarse dentro de su alcance en ese método, pero no desde otros métodos.
+
+3. Clase: variable declarada dentro de una clase y fuera de sus métodos. Se conoce como atributo o campo y puede utilizarse desde distintos métodos, según sus modificadores de acceso.
+   Diferencia entre alcance y ciclo de vida
+- Alcance: dónde se puede acceder a una variable.
+- Ciclo de vida: cuánto tiempo existe una variable.
+  Importante: Las variables locales existen durante la ejecución del contexto donde fueron declaradas. Los atributos de instancia existen mientras exista su objeto y las variables static pertenecen a la clase.
+
+En resumen: el alcance controla la visibilidad de las variables y el ciclo de vida determina su duración.
+
+## Recursividad (Recursion) en Java
+La recursividad es una técnica de programación en la que un método se llama a sí mismo para resolver un problema mediante partes más pequeñas del mismo problema.
+Conceptos principales
+1. Caso base (Base Case): condición que detiene las llamadas recursivas y evita que se ejecuten indefinidamente.
+
+2. Llamada recursiva (Recursive Call): cuando un método se llama a sí mismo, generalmente utilizando un problema más pequeño o sencillo.
+
+3. Pila de llamadas (Call Stack): estructura de memoria donde Java almacena las llamadas a los métodos mientras se ejecutan. Al finalizar cada llamada, se libera su espacio en la pila.
+
+4. StackOverflowError: error que ocurre cuando la pila de llamadas se queda sin espacio, generalmente por una recursividad infinita o demasiado profunda.
+   
+¿Cómo evitar errores?
+- Definir siempre un caso base.
+- Asegurarse de que cada llamada se acerque al caso base.
+- Evitar llamadas recursivas infinitas.
+- Controlar la profundidad de la recursividad.
+  En resumen: la recursividad permite que un método se llame a sí mismo para resolver problemas. Para funcionar correctamente necesita un caso base, llamadas recursivas que avancen hacia él y un control adecuado de la pila de llamadas.
+
+## Arreglos 1D y 2D (Arrays) en Java
+Los arreglos (arrays) son estructuras de datos que permiten almacenar varios elementos del mismo tipo en una sola variable. Cada elemento se identifica mediante un índice que comienza desde 0.
+Tipos de arreglos
+1. Unidimensionales (1D): almacenan datos en una sola dimensión, como una lista. Utilizan un solo índice.
+   int[] numeros = {10, 20, 30, 40};
+   System.out.println(numeros[0]); // 10
+
+
+2. Bidimensionales (2D): almacenan datos en filas y columnas, como una matriz. Utilizan dos índices: uno para la fila y otro para la columna.
+
+   int[][] matriz = {
+   {1, 2, 3},
+   {4, 5, 6} };
+
+### Conceptos principales
+- Declaración: definir el tipo de dato y el nombre del arreglo (int[] numeros).
+- Inicialización: asignar valores al arreglo.
+- Indexación: acceder a los elementos mediante su posición, comenzando desde 0.
+- Recorrido: utilizar ciclos for para acceder a todos los elementos. En matrices 2D se utilizan dos ciclos anidados.
+
+## Fundamentos de JUnit 5
+En Java, JUnit 5 es un framework que permite crear y ejecutar pruebas unitarias (Unit Tests) para comprobar que los métodos de un programa funcionan correctamente.
+
+Su objetivo es detectar errores y validar que la lógica del código produzca los resultados esperados.
+
+Una prueba unitaria generalmente tiene tres pasos:
+1. Arrange (Preparar): preparar los datos y objetos necesarios.
+2. Act (Ejecutar): ejecutar el método que se desea probar.
+3. Assert (Verificar): comparar el resultado obtenido con el esperado. 
+
+Anotaciones principales de JUnit 5
+- @Test: indica que un método es una prueba.
+- @BeforeEach: se ejecuta antes de cada prueba.
+- @AfterEach: se ejecuta después de cada prueba.
+- @BeforeAll: se ejecuta una vez antes de todas las pruebas.
+- @AfterAll: se ejecuta una vez después de todas las pruebas.
+- @DisplayName: permite asignar un nombre descriptivo a una prueba.
+
+Métodos de verificación (Assertions)
+   Permiten comprobar si los resultados son los esperados.
+- assertEquals(esperado, obtenido): comprueba que dos valores sean iguales.
+- assertTrue(condicion): comprueba que una condición sea verdadera.
+- assertFalse(condicion): comprueba que una condición sea falsa.
+- assertNull(valor): comprueba que un valor sea null.
+- assertNotNull(valor): comprueba que un valor no sea null.
+- assertThrows(): comprueba que se produzca una excepción determinada. 
+
+Ejemplo básico
+   
+   public class Calculadora {
+
+   public int sumar(int a, int b) {
+   return a + b;
+   }
+   }
+#
+
+Clase de prueba con JUnit 5:
+
+import org.junit.jupiter.api.Test;<br>
+import static org.junit.jupiter.api.Assertions.*;<br>
+public class CalculadoraTest {
+
+    @Test
+    public void probarSuma() {
+
+        // Arrange
+        Calculadora calc = new Calculadora();
+
+        // Act
+        int resultado = calc.sumar(5, 3);
+
+        // Assert
+        assertEquals(8, resultado);
+    }
+}
+
+Si el resultado obtenido es 8, la prueba pasa. Si es diferente, la prueba falla.
+
+## 
+ **Construí** ArrayUtils (con reverse, rotateRight, rotateLeft, max sobrecargado para int[] y double[], y mergeSorted), MatrixUtils (con sum y transpose), RecursionUtils (con factorial, fibonacci, power y gcd), además de Day3Cli con Scanner y sus pruebas unitarias en JUnit 5. Aprendí a manejar índices y límites en arreglos 1D y 2D, a normalizar rotaciones, a diseñar casos base y recursivos evitando StackOverflowError, y a validar entradas como valores null, arreglos vacíos y matrices irregulares. Lo que me falta por reforzar es revisar casos límite de desbordamiento (overflow) en factorial y potencia, así como seguir practicando recursividad antes de entrar al bloque de DSA.
+
+## Resumen tipo Feynman — Día 3
+Un método es una cajita de instrucciones reutilizable que recibe datos, hace un trabajo y devuelve un resultado, y sobrecargarlo es tener varias versiones con el mismo nombre para distintos tipos o cantidades de datos. Un arreglo es una fila de casillas numeradas (o una cuadrícula si tiene filas y columnas) donde cada posición guarda un valor, mientras que la recursividad es cuando un método se llama a sí mismo con un problema más pequeño hasta llegar a una parada segura (el caso base). Probar todo con JUnit 5 permite comprobar automáticamente que los arreglos, matrices y llamadas recursivas respondan bien incluso en casos límite.
+
+## Preguntas de repaso 
+¿Cuál es la diferencia entre sobrecarga (overloading) y sobrescritura (overriding) de métodos en Java?
+
+¿Cómo afecta el alcance (scope) de una variable declarada dentro de un bloque for o if?
+
+¿Por qué toda función recursiva necesita un caso base y qué ocurre si falta o nunca se alcanza?
+
+En una matriz de r filas y c columnas, ¿qué dimensiones tiene su transpuesta y qué índice ocupa el elemento [r][c]?
+
+¿Por qué conviene separar la lógica pura de las clases CLI con Scanner al escribir pruebas unitarias en JUnit 5?
